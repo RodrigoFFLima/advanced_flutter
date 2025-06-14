@@ -19,7 +19,9 @@ class NextEventPlayer {
 
   String getInitials() {
     final names = name.split(' ');
-    return '${names[0][0]}${names[1][0]}'.toUpperCase();
+    final firstChar = names.first[0];
+    final lastChar = names.last[0];
+    return '$firstChar$lastChar'.toUpperCase();
   }
 }
 
@@ -40,5 +42,13 @@ void main() {
     );
 
     expect(player2.getInitials(), 'PC');
+
+    final player3 = NextEventPlayer(
+      id: '',
+      name: 'Ingrid Mota da Silva',
+      isConfirmed: true,
+    );
+
+    expect(player3.getInitials(), 'IS');
   });
 }
