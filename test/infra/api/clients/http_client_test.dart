@@ -76,5 +76,10 @@ void main() {
       await sut.get(url: url, params: {'p1': 'v1', 'p2': null});
       expect(client.url, 'https://anyurl.com/api/v1');
     });
+    test('should request with invalid params', () async {
+      url = 'https://anyurl.com/api/:p1/:p2';
+      await sut.get(url: url, params: {'p3': 'v3'});
+      expect(client.url, 'https://anyurl.com/api/:p1/:p2');
+    });
   });
 }
