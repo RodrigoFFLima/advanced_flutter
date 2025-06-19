@@ -46,10 +46,7 @@ void main() {
   test('should call http client with correct input', () async {
     await sut.loadNextEvent(groupId: groupId);
     expect(httpClient.url, url);
-    expect(httpClient.callsCount, 1);
-  });
-  test('should call http client with correct params', () async {
-    await sut.loadNextEvent(groupId: groupId);
     expect(httpClient.params, {"groupId": groupId});
+    expect(httpClient.callsCount, 1);
   });
 }
