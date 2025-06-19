@@ -95,5 +95,14 @@ void main() {
       await sut.get(url: url, queryString: {'q1': 'v1', 'q2': 'v2'});
       expect(client.url, '$url?q1=v1&q2=v2');
     });
+    test('should request with correct queryStrings and params', () async {
+      url = 'https://anyurl.com/api/:p3/:p4';
+      await sut.get(
+        url: url,
+        params: {'p3': 'v3', 'p4': 'v4'},
+        queryString: {'q1': 'v1', 'q2': 'v2'},
+      );
+      expect(client.url, 'https://anyurl.com/api/v3/v4?q1=v1&q2=v2');
+    });
   });
 }
