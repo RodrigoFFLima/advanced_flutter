@@ -1,9 +1,13 @@
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/domain/entities/next_event_player.dart';
 import 'package:advanced_flutter/domain/repositories/load_next_event_repo.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/fakes.dart';
+
+typedef Json = Map<String, dynamic>;
+typedef JsonArr = List<Json>;
 
 class LoadNextEventApiRepository implements LoadNextEventRepository {
   final HttpGetClientSpy httpClient;
@@ -13,7 +17,7 @@ class LoadNextEventApiRepository implements LoadNextEventRepository {
 
   @override
   Future<NextEvent> loadNextEvent({required String groupId}) async {
-    final json = await httpClient.get<Map<String, dynamic>>(
+    final json = await httpClient.get<Json>(
       url: url,
       params: {"groupId": groupId},
     );
@@ -22,7 +26,7 @@ class LoadNextEventApiRepository implements LoadNextEventRepository {
 }
 
 class NextEventMapper {
-  static NextEvent toObject(Map<String, dynamic> json) {
+  static NextEvent toObject(Json json) {
     return NextEvent(
       groupName: json['groupName'],
       date: DateTime.parse(json['date']),
@@ -32,10 +36,10 @@ class NextEventMapper {
 }
 
 class NextEventPalyerMapper {
-  static List<NextEventPlayer> toList(List<Map<String, dynamic>> arr) =>
+  static List<NextEventPlayer> toList(JsonArr arr) =>
       arr.map(NextEventPalyerMapper.toObject).toList();
 
-  static NextEventPlayer toObject(Map<String, dynamic> json) => NextEventPlayer(
+  static NextEventPlayer toObject(Json json) => NextEventPlayer(
     id: json['id'],
     name: json['name'],
     isConfirmed: json['isConfirmed'],
@@ -46,18 +50,18 @@ class NextEventPalyerMapper {
 }
 
 abstract class HttpGetClient {
-  Future<T> get<T>({required String url, Map<String, String>? params});
+  Future<T> get<T>({required String url, Json? params});
 }
 
 class HttpGetClientSpy implements HttpGetClient {
   String? url;
   int callsCount = 0;
-  Map<String, String>? params;
+  Json? params;
   dynamic response;
   Error? error;
 
   @override
-  Future<T> get<T>({required String url, Map<String, String>? params}) async {
+  Future<T> get<T>({required String url, Json? params}) async {
     this.url = url;
     this.params = params;
     callsCount++;
