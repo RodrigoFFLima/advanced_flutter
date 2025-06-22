@@ -26,6 +26,8 @@ class HttpClient {
     switch (response.statusCode) {
       case 200:
         break;
+      case 401:
+        throw DomainError.sessionExpired;
       default:
         throw DomainError.unexpected;
     }
