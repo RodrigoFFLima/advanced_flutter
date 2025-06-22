@@ -1,7 +1,7 @@
 import 'package:advanced_flutter/domain/entities/next_event_player.dart';
 import 'package:advanced_flutter/infra/types/json.dart';
 
-class NextEventPalyerMapper {
+final class NextEventPalyerMapper {
   static List<NextEventPlayer> toList(JsonArr arr) =>
       arr.map(NextEventPalyerMapper.toObject).toList();
 
