@@ -63,8 +63,8 @@ void main() {
       expect(client.url, 'https://anyurl.com/api/:p1/:p2');
     });
     test('should request with correct queryStrings', () async {
-      await sut.get(url: url, queryString: {'q1': 'v1', 'q2': 'v2'});
-      expect(client.url, '$url?q1=v1&q2=v2');
+      await sut.get(url: url, queryString: {'q1': 'v1', 'q2': 'v2', 'q3': 123});
+      expect(client.url, '$url?q1=v1&q2=v2&q3=123');
     });
     test('should request with correct queryStrings and params', () async {
       url = 'https://anyurl.com/api/:p3/:p4';
