@@ -1,4 +1,4 @@
-import 'package:advanced_flutter/domain/entities/domain_error.dart';
+import 'package:advanced_flutter/domain/entities/errors.dart';
 import 'package:advanced_flutter/domain/entities/next_event.dart';
 import 'package:advanced_flutter/domain/repositories/load_next_event_repo.dart';
 import 'package:advanced_flutter/infra/api/clients/http_get_client.dart';
@@ -21,7 +21,7 @@ final class LoadNextEventApiRepository implements LoadNextEventRepository {
       params: {"groupId": groupId},
     );
     if (json == null) {
-      throw DomainError.unexpected;
+      throw UnexpectedError();
     }
     return NextEventMapper.toObject(json);
   }
