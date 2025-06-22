@@ -13,7 +13,7 @@ class HttpClient {
 
   HttpClient({required this.client});
 
-  Future<T> get<T>({
+  Future<T?> get<T>({
     required String url,
     Map<String, String>? headers,
     Map<String, String?>? params,
@@ -29,6 +29,9 @@ class HttpClient {
     switch (response.statusCode) {
       case 200:
         {
+          if (response.body.isEmpty) {
+            return null;
+          }
           final data = jsonDecode(response.body);
           return (T == JsonArr)
               ? data.map<Json>((e) => e as Json).toList()
@@ -163,8 +166,8 @@ void main() {
 
     test('should return a Map', () async {
       final data = await sut.get(url: url);
-      expect(data['key1'], 'value1');
-      expect(data['key2'], 'value2');
+      expect(data?['key1'], 'value1');
+      expect(data?['key2'], 'value2');
     });
 
     test('should return a List', () async {
@@ -177,8 +180,8 @@ void main() {
     }]
     ''';
       final data = await sut.get(url: url);
-      expect(data[0]['key'], 'value1');
-      expect(data[1]['key'], 'value2');
+      expect(data?[0]['key'], 'value1');
+      expect(data?[1]['key'], 'value2');
     });
 
     test('should return a Map with List', () async {
@@ -194,9 +197,15 @@ void main() {
       }
       ''';
       final data = await sut.get(url: url);
-      expect(data['key1'], 'value1');
-      expect(data['key2'][0]['key'], 'value1');
-      expect(data['key2'][1]['key'], 'value2');
+      expect(data?['key1'], 'value1');
+      expect(data?['key2'][0]['key'], 'value1');
+      expect(data?['key2'][1]['key'], 'value2');
+    });
+
+    test('should return null on 200 with empty response', () async {
+      client.responseJson = '';
+      final data = await sut.get(url: url);
+      expect(data, isNull);
     });
   });
 }
